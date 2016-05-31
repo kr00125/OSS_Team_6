@@ -14,7 +14,6 @@ void setup() {
   size(640, 640);
   noStroke();
   frameRate(100);
-  println("Jae-Jin One day Two Presentation");
 }
  
 void draw() {
