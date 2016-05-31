@@ -40,6 +40,26 @@ void draw() {
     }
     clist.add(cir);
     count++;
+    for(Circle c: clist){
+     c.update();
+     c.draw();
+     if(count%10==0)
+       c.setColor();
+    }
+    while(true){
+      for(Circle c : clist){
+       check = c.detectCollision(cir); 
+       if(check){
+         cir = new Circle(count);
+         break;
+       }
+      }
+      if(!check){
+        break;        
+      }
+    }
+    clist.add(cir);
+    count++;
 }
 
 class Circle 
