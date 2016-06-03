@@ -5,6 +5,10 @@
 /* http://slambeetle.tumblr.com                                                          */
 /* member since May 13, 2014                                                             */
 
+import processing.serial.*;  // 시리얼 통신을 하기 위한 준비.
+Serial port;  // 시리얼 객체로 port 선언.
+int amps;  // 아두이노에서 가져온 값을 저장할 변수 선언.
+
 ArrayList nodes = new ArrayList();  
 ArrayList nodes_right = new ArrayList();
 // The temporary storage of end nodes which will later be transfered to the nodes list
@@ -49,7 +53,8 @@ PImage[] music = new PImage[3]; // Image
 
 ////////////////////////////////////////////////////////////////////////set up
 void setup() {
- 
+  printArray(Serial.list());  // 사용 가능한 시리얼 포트를 모두 리스트.
+  port = new Serial(this, Serial.list()[2], 115200);  // 2번 시리얼 포트를 사용. (현재 컴퓨터에서 사용하는 아두이노 포트가 2번이기 때문). 통신 속도는  115200bps.
   frameRate(50);
   size(1280, 720);
   noStroke();
@@ -125,6 +130,7 @@ void setup() {
 }
  
 void draw() {
+  amps = port.read();  // amps에 시리얼 통신으로 아두이노에서 얻어온 값을 저장.
   background(255);
   
   if(avadB<50){
