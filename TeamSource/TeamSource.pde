@@ -130,7 +130,11 @@ void setup() {
 }
  
 void draw() {
-  amps = port.read();  // amps에 시리얼 통신으로 아두이노에서 얻어온 값을 저장.
+  if(port.available()>0)  // 불필요한 값 걸러냄.
+  {
+    amps = port.read();  // amps에 시리얼 통신으로 아두이노에서 얻어온 값을 저장.
+  }
+  println(amps);  // amps값 콘솔에 출력.
   background(255);
   
   if(avadB<50){
@@ -151,7 +155,7 @@ void draw() {
     particles_right[i].move();
   }
   
-  dB = 10;
+  dB = amps;
   
   dB_Queue[dB_Queue_index].add((int)dB);
   avadB += v_dB;

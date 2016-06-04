@@ -37,8 +37,10 @@ void loop() {
     }
   }
   peakToPeak = signalMax - signalMin; // 진폭 값을 저장.
-  int amps = peakToPeak; // 프로세싱으로 보내려는 진폭 값을 저장.
-
+  //int amps = peakToPeak; // 프로세싱으로 보내려는 진폭 값을 저장.
+  
+  long amps = map(peakToPeak, 0, 680, 0, 255);  // peakToPeak의 범위 : 0~680, 프로세싱으로 0~255 사이의 값만이 전달되기 때문에 매핑.
+  
   Serial.write(amps);  // 프로세싱에 매개변수 sensorValue 값(amps) 전송.
 }
 
