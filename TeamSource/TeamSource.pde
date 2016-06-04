@@ -51,6 +51,10 @@ PImage img2;
 PImage img3;
 PImage[] music = new PImage[3]; // Image
 
+int bkR = 255;  // 바탕색(R)
+int bkG = 255;  // 바탕색(G)
+int bkB = 255;  // 바탕색(B)
+
 ////////////////////////////////////////////////////////////////////////set up
 void setup() {
   printArray(Serial.list());  // 사용 가능한 시리얼 포트를 모두 리스트.
@@ -64,12 +68,12 @@ void setup() {
   dB_Queue[0] = new ArrayList();
   dB_Queue[1] = new ArrayList();  // set dB_Queue
   
-  img = loadImage("human.png");
-  img2 = loadImage("dancing.png");
-  img3 = loadImage("smalldancing.png");
-  music[0] = loadImage("music.png");
-  music[1] = loadImage("music2.png");
-  music[2] = loadImage("music3.png"); //////////////load image
+  img = loadImage("moombo1.png");
+  img2 = loadImage("moombo2.png");
+  img3 = loadImage("moombo3.png");
+  music[0] = loadImage("phone.png");
+  music[1] = loadImage("footstep.png");
+  music[2] = loadImage("haha.png"); //////////////load image
   
                                 // Add beginning node
   nodes.add(new Node(new PVector(0+50, height/2), 90, distance, 0));
@@ -135,16 +139,26 @@ void draw() {
     amps = port.read();  // amps에 시리얼 통신으로 아두이노에서 얻어온 값을 저장.
   }
   println(amps);  // amps값 콘솔에 출력.
-  background(255);
   
-  if(avadB<50){
-    image(img, width/2-150, height/2-200);
+  background(bkR, bkG, bkB);
+  
+  if(avadB<20){
+    bkR = 184;
+    bkG = 229;
+    bkB = 112;
+    image(img, 0, 0);
   }
-  else if(avadB<90){
-    image(img3, width/2-150, height/2-200);
+  else if(avadB>100){
+    bkR = 226;
+    bkG = 113;
+    bkB = 113;
+    image(img3, 0, 0);
   }
   else{
-    image(img2, width/2-200, height/2-200);
+    bkR = 226;
+    bkG = 172;
+    bkB = 113;
+    image(img2, 0, 0);
   }
   
   for (int i = 0; i < avadB/3; i++) {
@@ -155,7 +169,7 @@ void draw() {
     particles_right[i].move();
   }
   
-  dB = amps;
+  dB = amps/2;
   
   dB_Queue[dB_Queue_index].add((int)dB);
   avadB += v_dB;
@@ -239,7 +253,7 @@ class Particle {                         // Particle Class (ipja)
   void draw(int x) {                          // Particle draw to screen
     fill(255);
     //rect(loc.x, loc.y, 30, 30);            //draw Image
-    image(music[x%3], loc.x-avadB/2, loc.y-avadB/2, avadB, avadB);
+    image(music[x%3], loc.x-avadB/2, loc.y-avadB/2, avadB/2, avadB/2);
   }
  
   void move() {                          // Particle move function
