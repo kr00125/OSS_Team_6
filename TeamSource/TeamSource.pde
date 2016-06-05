@@ -100,7 +100,7 @@ void setup() {
   n.addNextNodes();
   n_right.addNextNodes();
   n.mn = (Node) nodes.get(0);
-  n.mn = (Node) nodes_right.get(0);
+  n_right.mn = (Node) nodes_right.get(0);
                                 // Add node into list
   nodes.add(n);
   nodes_right.add(n_right);
@@ -338,7 +338,7 @@ class Particle {                         // Particle Class (ipja)
   void draw(int x) {                          // Particle draw to screen
     fill(255);
     //rect(loc.x, loc.y, 30, 30);            //draw Image
-    image(music[x%3], loc.x-avadB/2, loc.y-avadB/2, avadB/1.5, avadB/1.5);
+    image(music[x%3], loc.x-avadB/3, loc.y-avadB/3, avadB/1.5, avadB/1.5);
   }
  
   void move() {                          // Particle move function
