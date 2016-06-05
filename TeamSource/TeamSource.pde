@@ -228,7 +228,7 @@ void draw() {
       }
   
    //VENN DIAGRAM
-   noiseValues_Venn = (int)noiseValues_line.get(6);
+   noiseValues_Venn = (int)noiseValues_line.get(19);
     if(noiseValues_Venn<=PROPER_VALUE){     //set color Venn Diagram
       fill(20,200,PROPER_VALUE*1.2);
     }
@@ -268,9 +268,11 @@ void draw() {
   speedValue = (int)avadB/20;
   framecount++;
   
-  if(keyPressed && key==CODED && keyCode==ENTER){
-     if(sceneNumber==0) sceneNumber = 1;
-     else sceneNumber = 0;
+  if(keyPressed && key==CODED && keyCode==RIGHT){
+     sceneNumber = 1;
+  }
+  if(keyPressed && key==CODED && keyCode==LEFT){
+    sceneNumber = 0;
   }
 }
  
