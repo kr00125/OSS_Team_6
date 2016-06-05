@@ -5,6 +5,11 @@
 /* http://slambeetle.tumblr.com                                                          */
 /* member since May 13, 2014                                                             */
 
+/* Data_Viz                  */
+/* written by Jessie Contour */
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
 import processing.serial.*;  // 시리얼 통신을 하기 위한 준비.
 Serial port;  // 시리얼 객체로 port 선언.
 int amps;  // 아두이노에서 가져온 값을 저장할 변수 선언.
@@ -17,7 +22,6 @@ ArrayList nextNodes_right = new ArrayList();
  
 Particle[] particles = new Particle[50];
 Particle[] particles_right = new Particle[50];
- 
 // Default angle inbetween forked nodes
 int mainAngle = 25;
 // How big the tree will be in levels
@@ -54,6 +58,18 @@ PImage[] music = new PImage[3]; // Image
 int bkR = 255;  // 바탕색(R)
 int bkG = 255;  // 바탕색(G)
 int bkB = 255;  // 바탕색(B)
+
+////////////////////////////////////////////////////////////////////////////////////////////// tree node variables
+
+ArrayList noiseValues_bar = new ArrayList();
+ArrayList noiseValues_line = new ArrayList();
+int noiseValues_Venn;
+int PROPER_VALUE = 50;
+final int HEIGHT_HALF = 360; 
+
+////////////////////////////////////////////////////////////////////////////////////////////// graph variables
+
+int sceneNumber = 0;       // variable for change scene 
 
 ////////////////////////////////////////////////////////////////////////set up
 void setup() {
@@ -131,44 +147,103 @@ void setup() {
     particles[i] = new Particle(0);
     particles_right[i] = new Particle(1);
   }
+  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  for (int i = 0; i < 7; i++) { // setting array bargraph, value is 0
+    noiseValues_bar.add((int)random(40,60));
+  }
+  for (int i = 0; i < 20; i++) { // setting array bargraph, value is 0
+    noiseValues_line.add(0);
+  }
+  
 }
  
 void draw() {
+ 
   if(port.available()>0)  // 불필요한 값 걸러냄.
   {
     amps = port.read();  // amps에 시리얼 통신으로 아두이노에서 얻어온 값을 저장.
   }
   println(amps);  // amps값 콘솔에 출력.
   
-  background(bkR, bkG, bkB);
+  if(sceneNumber==0)  // draw tree node
+  {
+    background(bkR, bkG, bkB);
+ 
+    if(avadB<20){
+      bkR = 184;
+      bkG = 229;
+      bkB = 112;
+      image(img, 0, 0);
+     }
+    else if(avadB>100){
+      bkR = 226;
+      bkG = 113;
+      bkB = 113;
+      image(img3, 0, 0);
+    }
+    else{
+      bkR = 226;
+      bkG = 172;
+      bkB = 113;
+      image(img2, 0, 0);
+    }
   
-  if(avadB<20){
-    bkR = 184;
-    bkG = 229;
-    bkB = 112;
-    image(img, 0, 0);
+    for (int i = 0; i < avadB/6; i++) {
+      particles[i].draw(i);
+      particles_right[i].draw(i);
+      
+      particles[i].move();
+      particles_right[i].move();
+    }
   }
-  else if(avadB>100){
-    bkR = 226;
-    bkG = 113;
-    bkB = 113;
-    image(img3, 0, 0);
-  }
-  else{
-    bkR = 226;
-    bkG = 172;
-    bkB = 113;
-    image(img2, 0, 0);
+  else if(sceneNumber==1){  // draw graph
+    background(255);      // print to background white 
+  
+    line(0, HEIGHT_HALF, width, HEIGHT_HALF);
+  
+   //BARGRAPH ONE   
+  
+    for (int i=0; i < noiseValues_bar.size(); i++) {
+      if((int)noiseValues_bar.get(i)>75){
+       fill(225, 0, 0);// setting bar graph color 
+      }
+      else{
+       fill(125, 0, 125);// setting bar graph color 
+      }
+      rect(i*width/7+width/14-50, height-(int)noiseValues_bar.get(i)*3, 100, (int)noiseValues_bar.get(i)*3+100);             // draw bargraph array
+    }
+ 
+  
+    //LINE GRAPH
+    for (int i=0; i < noiseValues_line.size()-1; i++) {      // set color and draw line of line graph
+      strokeWeight(5);
+      line(i*width/29, (HEIGHT_HALF-50)-(int)noiseValues_line.get(i)*2, (i+1)*width/29, (HEIGHT_HALF-50)-(int)noiseValues_line.get(i+1)*2);
+    }
+    for (int i=0; i < noiseValues_line.size(); i++) {       // set color and draw circle of line graph
+      strokeWeight(5);
+      fill(125,225,0);        // setting line graph color by black
+       ellipse(i*width/29, (HEIGHT_HALF-50)-(int)noiseValues_line.get(i)*2, 20,20);
+      }
+  
+   //VENN DIAGRAM
+   noiseValues_Venn = (int)noiseValues_line.get(6);
+    if(noiseValues_Venn<=PROPER_VALUE){     //set color Venn Diagram
+      fill(20,200,PROPER_VALUE*1.2);
+    }
+    else if(noiseValues_Venn<=PROPER_VALUE*1.2){
+      fill(200,200,PROPER_VALUE*1.2);
+    }
+    else{
+      fill(255,100,PROPER_VALUE*1.2);
+    }
+    ellipse(width-300, HEIGHT_HALF/2, noiseValues_Venn*2, noiseValues_Venn*2);  
+    fill(20,200,PROPER_VALUE*1.2);
+    ellipse(width-100, HEIGHT_HALF/2, PROPER_VALUE*2, PROPER_VALUE*2);    // draw venn diagram proper values and dB_value;
   }
   
-  for (int i = 0; i < avadB/6; i++) {
-    particles[i].draw(i);
-    particles_right[i].draw(i);
-    
-    particles[i].move();
-    particles_right[i].move();
-  }
-  
+  /////////////////////////////////////////////////////////////////////////////////update lists
   dB = amps/2;
   
   dB_Queue[dB_Queue_index].add((int)dB);
@@ -180,6 +255,10 @@ void draw() {
     }
     avadB = nextdB;
     nextdB = sum/dB_Queue[dB_Queue_index].size();
+    
+    noiseValues_line.remove(0);
+    noiseValues_line.add(nextdB);
+    
     v_dB = (nextdB - avadB)/20;    
     if(dB_Queue_index==0) dB_Queue_index = 1;
     else dB_Queue_index=0;
@@ -188,6 +267,11 @@ void draw() {
   }
   speedValue = (int)avadB/20;
   framecount++;
+  
+  if(keyPressed && key==CODED && keyCode==ENTER){
+     if(sceneNumber==0) sceneNumber = 1;
+     else sceneNumber = 0;
+  }
 }
  
 class Node {                             // Node Class
