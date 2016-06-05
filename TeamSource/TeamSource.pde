@@ -77,7 +77,6 @@ void setup() {
   port = new Serial(this, Serial.list()[2], 115200);  // 2번 시리얼 포트를 사용. (현재 컴퓨터에서 사용하는 아두이노 포트가 2번이기 때문). 통신 속도는  115200bps.
   frameRate(60);
   size(1280, 720);
-  noStroke();
   fill(255);                    // background fill white color
   
   dB_Queue = new ArrayList[2];
@@ -224,11 +223,11 @@ void draw() {
     for (int i=0; i < noiseValues_line.size(); i++) {       // set color and draw circle of line graph
       strokeWeight(5);
       fill(125,225,0);        // setting line graph color by black
-       ellipse(i*width/29, (HEIGHT_HALF-50)-(int)noiseValues_line.get(i)*2, 20,20);
-      }
+      ellipse(i*width/29, (HEIGHT_HALF-50)-(int)noiseValues_line.get(i)*2, 20,20);
+    }
   
    //VENN DIAGRAM
-   noiseValues_Venn = (int)noiseValues_line.get(19);
+   noiseValues_Venn = (int)avadB;
     if(noiseValues_Venn<=PROPER_VALUE){     //set color Venn Diagram
       fill(20,200,PROPER_VALUE*1.2);
     }
