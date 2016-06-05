@@ -59,7 +59,7 @@ int bkB = 255;  // 바탕색(B)
 void setup() {
   printArray(Serial.list());  // 사용 가능한 시리얼 포트를 모두 리스트.
   port = new Serial(this, Serial.list()[2], 115200);  // 2번 시리얼 포트를 사용. (현재 컴퓨터에서 사용하는 아두이노 포트가 2번이기 때문). 통신 속도는  115200bps.
-  frameRate(50);
+  frameRate(60);
   size(1280, 720);
   noStroke();
   fill(255);                    // background fill white color
@@ -253,7 +253,7 @@ class Particle {                         // Particle Class (ipja)
   void draw(int x) {                          // Particle draw to screen
     fill(255);
     //rect(loc.x, loc.y, 30, 30);            //draw Image
-    image(music[x%3], loc.x-avadB/2, loc.y-avadB/2, avadB/2, avadB/2);
+    image(music[x%3], loc.x-avadB/2, loc.y-avadB/2, avadB/1.5, avadB/1.5);
   }
  
   void move() {                          // Particle move function
