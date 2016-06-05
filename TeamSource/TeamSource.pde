@@ -15,15 +15,15 @@ ArrayList nodes_right = new ArrayList();
 ArrayList nextNodes = new ArrayList();
 ArrayList nextNodes_right = new ArrayList();
  
-Particle[] particles = new Particle[1000];
-Particle[] particles_right = new Particle[1000];
+Particle[] particles = new Particle[50];
+Particle[] particles_right = new Particle[50];
  
 // Default angle inbetween forked nodes
-int mainAngle = 23;
+int mainAngle = 25;
 // How big the tree will be in levels
 int amount = 6;
 // Default distance inbetween nodes
-int distance = 130;
+int distance = 170;
 // DO NOT EDIT
 int endNodeAmount = 2;
 
@@ -76,11 +76,11 @@ void setup() {
   music[2] = loadImage("haha.png"); //////////////load image
   
                                 // Add beginning node
-  nodes.add(new Node(new PVector(0+50, height/2), 90, distance, 0));
-  nodes_right.add(new Node(new PVector(width-50, height/2), 270, distance, 1));
+  nodes.add(new Node(new PVector(0, height/2), 90, distance, 0));
+  nodes_right.add(new Node(new PVector(width, height/2), 270, distance, 1));
                                 // Create second node
-  Node n = new Node(new PVector(0+distance+50, height/2), 90, distance, 0);
-  Node n_right = new Node(new PVector(width-50-distance, height/2), 270, distance, 1);
+  Node n = new Node(new PVector(50, height/2), 90, distance, 0);
+  Node n_right = new Node(new PVector(width-50, height/2), 270, distance, 1);
                                 // Make branching nodes
   n.addNextNodes();
   n_right.addNextNodes();
@@ -161,7 +161,7 @@ void draw() {
     image(img2, 0, 0);
   }
   
-  for (int i = 0; i < avadB/3; i++) {
+  for (int i = 0; i < avadB/6; i++) {
     particles[i].draw(i);
     particles_right[i].draw(i);
     
